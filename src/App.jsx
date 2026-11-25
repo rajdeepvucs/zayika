@@ -69,7 +69,60 @@ const menuItems = [
       "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=900"
   }
 ];
-
+const menuData = [
+  {
+    title: "Soup",
+    subtitle: "Fresh & Delicious",
+    image:
+      "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=800",
+    items: [
+      { name: "Manchow Soup", veg: 150, nonveg: 180 },
+      { name: "Hot & Sour Soup", veg: 150, nonveg: 180 },
+      { name: "Cream of Mushroom Soup", veg: 200 },
+      { name: "Sweet Corn Soup", veg: 150, nonveg: 180 },
+      { name: "Clear Soup", veg: 150, nonveg: 180 },
+      { name: "Lemon Coriander", veg: 170, nonveg: 180 },
+      { name: "Thai Soup", veg: 190, nonveg: 220 },
+    ],
+  },
+  {
+    title: "Biryani",
+    subtitle: "Royal Taste of India",
+    image:
+      "https://images.unsplash.com/photo-1563379091339-03246963d96c?w=800",
+    items: [
+      { name: "Chicken Biryani", price: 225 },
+      { name: "Mutton Biryani", price: 350 },
+      { name: "Chicken Tikka Biryani", price: 300 },
+      { name: "Chicken Spl Biryani (2pcs)", price: 365 },
+      { name: "Mutton Spl Biryani (2pcs)", price: 525 },
+    ],
+  },
+  {
+    title: "Chinese Veg Starter",
+    subtitle: "Crispy & Spicy",
+    image:
+      "https://images.unsplash.com/photo-1512058564366-18510be2db19?w=800",
+    items: [
+      { name: "Crispy Chilli Baby Corn", price: 295 },
+      { name: "Crispy Chilli Potato", price: 285 },
+      { name: "French Fries", price: 125 },
+      { name: "Chilli Paneer Dry", price: 310 },
+    ],
+  },
+  {
+    title: "Main Course",
+    subtitle: "Authentic Indian Flavours",
+    image:
+      "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=800",
+    items: [
+      { name: "Paneer Butter Masala", price: 280 },
+      { name: "Dal Makhani", price: 220 },
+      { name: "Butter Chicken", price: 350 },
+      { name: "Kadai Paneer", price: 260 },
+    ],
+  },
+];
 const events = [
   {
     date: "28 NOV",
@@ -96,6 +149,101 @@ const events = [
       "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=900"
   }
 ];
+
+function MenuCard({ category, index }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 40 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      whileHover="hover"
+      initial="rest"
+      className="group relative h-[420px] overflow-hidden rounded-[25px] cursor-pointer shadow-xl border-[5px] border-amber-900"
+    >
+      {/* Background Image */}
+      <img
+        src={category.image}
+        alt={category.title}
+        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+      />
+
+      {/* Dark Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+
+      {/* Category Title */}
+      <motion.div
+        variants={{
+          rest: { opacity: 1, y: 0 },
+          hover: { opacity: 0, y: -40 },
+        }}
+        transition={{ duration: 0.3 }}
+        className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center"
+      >
+        <h2 className="text-5xl font-serif italic text-white">
+          {category.title}
+        </h2>
+
+        <p className="text-amber-200 mt-3 tracking-widest">
+          {category.subtitle}
+        </p>
+
+        <span className="mt-8 text-white border border-amber-300 px-6 py-2 rounded-full text-xs">
+          HOVER TO EXPLORE ↓
+        </span>
+      </motion.div>
+
+      {/* Sliding Menu */}
+      <motion.div
+        variants={{
+          rest: { y: "100%" },
+          hover: { y: 0 },
+        }}
+        transition={{
+          duration: 0.5,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className="absolute inset-0 z-20 bg-[#fff3cf] rounded-[18px] p-5 flex flex-col justify-center"
+      >
+        <div className="text-center mb-5">
+          <h2 className="text-3xl font-serif italic text-amber-950">
+            {category.title}
+          </h2>
+          <p className="text-amber-700 text-xs mt-2">
+            ✦ FRESHLY PREPARED ✦
+          </p>
+        </div>
+
+        <div className="space-y-4 overflow-y-auto">
+          {category.items.map((item, i) => (
+            <div key={i} className="text-amber-950">
+              <div className="flex justify-between items-start gap-2">
+                <span className="text-sm font-medium">
+                  {item.name}
+                </span>
+
+                <span className="text-sm font-bold whitespace-nowrap">
+                  ₹{item.price ?? item.veg}/-
+                </span>
+              </div>
+
+              {item.nonveg && (
+                <div className="text-right text-xs text-amber-800">
+                  Non-Veg: ₹{item.nonveg}/-
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <p className="text-center text-xs text-amber-800 mt-4">
+          ✦ ENJOY YOUR MEAL ✦
+        </p>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 function App() {
   const [open, setOpen] = useState(false);
 
@@ -647,7 +795,17 @@ const displayedItems = showVegOnly
             </div> */}
           </div>
         </section>
-
+<section id="menu" className="bg-[#151515] py-28 px-6">
+  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {menuData.map((category, index) => (
+            <MenuCard
+              key={category.title}
+              category={category}
+              index={index}
+            />
+          ))}
+        </div>
+</section>
       {/* upcoming Events Section */}
     <section id="events" className="bg-[#F5C542] py-28 px-6">
           <div className="max-w-7xl mx-auto">
